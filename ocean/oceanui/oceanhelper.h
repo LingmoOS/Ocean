@@ -37,6 +37,8 @@
 
 namespace Ocean
 {
+    // 在命名空间开始处声明
+    extern QColor baseColor;
 
     //* ocean style helper class.
     /** contains utility functions used at multiple places in both ocean style and ocean window decoration */
@@ -71,7 +73,10 @@ namespace Ocean
 
         //* focus color
         QColor focusColor( const QPalette& palette ) const
-        { return _viewFocusBrush.brush( palette ).color(); }
+        {
+            Q_UNUSED(palette);
+            return baseColor;
+        }
 
         //* negative text color (used for close button)
         QColor negativeText( const QPalette& palette ) const
@@ -288,7 +293,10 @@ namespace Ocean
         
         //* returns true if a given palette has dark colors 
         bool isDarkTheme( const QPalette& palette) const
-        { return true; }
+        { 
+            Q_UNUSED(palette);
+            return true;
+        }
         
 
         //@}
@@ -312,6 +320,9 @@ namespace Ocean
         
         QPixmap coloredIcon(const QIcon &icon, const QPalette& palette, const QSize &size,
                             QIcon::Mode mode = QIcon::Normal, QIcon::State state = QIcon::Off);
+
+        // 获取当前强调色
+        QColor accentColor() const { return baseColor; }
 
         protected:
 

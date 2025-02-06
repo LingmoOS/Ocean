@@ -8465,7 +8465,7 @@ QPalette Style::lightModePalette() const
     palette.setColor(QPalette::All, QPalette::ToolTipBase, QRgb(0xF7F7F7));
     palette.setColor(QPalette::All, QPalette::ToolTipText, QRgb(0x1D1D20));
 
-    palette.setColor(QPalette::Active, QPalette::Button, QRgb(0xD4D5DD));
+    palette.setColor(QPalette::Active, QPalette::Button, QRgb(0xFAFAFA));
     palette.setColor(QPalette::Inactive, QPalette::Button, QRgb(0xDCDCE0));
     palette.setColor(QPalette::Disabled, QPalette::Button, QRgb(0xE5E5E6));
 
@@ -8473,7 +8473,7 @@ QPalette Style::lightModePalette() const
     palette.setColor(QPalette::Inactive, QPalette::ButtonText, QRgb(0x454A54));
     palette.setColor(QPalette::Disabled, QPalette::ButtonText, QRgb(0x97979B));
 
-    palette.setColor(QPalette::Active, QPalette::Highlight, QRgb(0x549CFF));
+    palette.setColor(QPalette::Active, QPalette::Highlight, baseColor);
     palette.setColor(QPalette::Inactive, QPalette::Highlight, QRgb(0x96C2FF));
     palette.setColor(QPalette::Disabled, QPalette::Highlight, QRgb(0xBFDAFF));
 
@@ -8540,7 +8540,7 @@ QPalette Style::darkModePalette() const
     palette.setColor(QPalette::Inactive, QPalette::ButtonText, QRgb(0x9E9FA5));
     palette.setColor(QPalette::Disabled, QPalette::ButtonText, QRgb(0x73747E));
 
-    palette.setColor(QPalette::Active, QPalette::Highlight, QRgb(0x447FCF));
+    palette.setColor(QPalette::Active, QPalette::Highlight, baseColor);
     palette.setColor(QPalette::Inactive, QPalette::Highlight, QRgb(0x3B6EB3));
     palette.setColor(QPalette::Disabled, QPalette::Highlight, QRgb(0x315B94));
 

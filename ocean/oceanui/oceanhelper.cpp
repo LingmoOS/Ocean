@@ -40,8 +40,93 @@
 #include <QDBusConnection>
 
 #include <QSettings>
+#include <QColor>
+#include <QStyle>
 
 //#include <QDebug>
+
+namespace Ocean {
+    // 定义全局变量 baseColor
+    QColor baseColor;
+}
+
+QColor m_blueColor = QColor(34, 119, 255); // #2277FF
+QColor m_redColor = QColor(255, 92, 109); // #FF5C6D
+QColor m_greenColor = QColor(53, 191, 86); // #35BF56
+QColor m_purpleColor = QColor(130, 102, 255); // #8266FF
+QColor m_pinkColor = QColor(202, 100, 172); // #CA64AC
+QColor m_orangeColor = QColor(254, 160, 66); // #FEA042
+QColor m_greyColor = QColor(79, 89, 107); // #4F596B
+
+void setBaseColorFromAccentColor(int accentColorID) {
+    switch (accentColorID) {
+    case 0:
+        Ocean::baseColor = m_blueColor;
+        break;
+    case 1:
+        Ocean::baseColor = m_redColor;
+        break;
+    case 2:
+        Ocean::baseColor = m_greenColor;
+        break;
+    case 3:
+        Ocean::baseColor = m_purpleColor;
+        break;
+    case 4:
+        Ocean::baseColor = m_pinkColor;
+        break;
+    case 5:
+        Ocean::baseColor = m_orangeColor;
+        break;
+    case 6:
+        Ocean::baseColor = m_greyColor;
+        break;
+    default:
+        Ocean::baseColor = m_blueColor;
+        break;
+    }
+}
+
+// 处理 accentColor 变化的槽函数
+void onAccentColorChanged() {
+    QDBusInterface iface("com.lingmo.Settings",
+                         "/Theme",
+                         "com.lingmo.Theme",
+                         QDBusConnection::sessionBus());
+    if (iface.isValid()) {
+        int accentColorID = iface.property("accentColor").toInt();
+        setBaseColorFromAccentColor(accentColorID);
+
+        // 获取所有窗口部件
+        for (QWidget *widget : qApp->allWidgets()) {
+            if (auto helper = qobject_cast<Ocean::Helper*>(widget->style())) {
+                helper->loadConfig();  // 调用实例方法而不是静态方法
+            }
+            widget->style()->unpolish(widget);
+            widget->style()->polish(widget);
+            widget->update();
+        }
+    }
+}
+
+void initializeBaseColor(QObject *context) {
+    QDBusInterface iface("com.lingmo.Settings",
+                         "/Theme",
+                         "com.lingmo.Theme",
+                         QDBusConnection::sessionBus());
+    if (iface.isValid()) {
+        int accentColorID = iface.property("accentColor").toInt();
+        setBaseColorFromAccentColor(accentColorID);
+
+        // 连接 accentColorChanged 信号到槽函数
+        QDBusConnection::sessionBus().connect("com.lingmo.Settings",
+                                              "/Theme",
+                                              "com.lingmo.Theme",
+                                              "accentColorChanged",
+                                              context,
+                                              SLOT(onAccentColorChanged()));
+    }
+}
 
 namespace Ocean
 {
@@ -68,6 +153,7 @@ namespace Ocean
                 }
             });
         }
+        initializeBaseColor(this);
     }
 
     //____________________________________________________________________
@@ -87,10 +173,10 @@ namespace Ocean
         KConfig config(qApp->property("KDE_COLOR_SCHEME_PATH").toString(), KConfig::SimpleConfig);
         KConfigGroup appGroup( config.group("WM") );
         KConfigGroup globalGroup( _config->group("WM") );
-        _activeTitleBarColor = appGroup.readEntry( "activeBackground", globalGroup.readEntry( "activeBackground", palette.color( QPalette::Active, QPalette::Highlight ) ) );
-        _activeTitleBarTextColor = appGroup.readEntry( "activeForeground", globalGroup.readEntry( "activeForeground", palette.color( QPalette::Active, QPalette::HighlightedText ) ) );
-        _inactiveTitleBarColor = appGroup.readEntry( "inactiveBackground", globalGroup.readEntry( "inactiveBackground", palette.color( QPalette::Disabled, QPalette::Highlight ) ) );
-        _inactiveTitleBarTextColor = appGroup.readEntry( "inactiveForeground", globalGroup.readEntry( "inactiveForeground", palette.color( QPalette::Disabled, QPalette::HighlightedText ) ) );
+        _activeTitleBarColor = Ocean::baseColor;
+        _activeTitleBarTextColor = palette.color(QPalette::Active, QPalette::HighlightedText);
+        _inactiveTitleBarColor = Ocean::baseColor.darker(120);
+        _inactiveTitleBarTextColor = palette.color(QPalette::Disabled, QPalette::HighlightedText);
         
     }
 
@@ -414,7 +500,7 @@ namespace Ocean
 
     //______________________________________________________________________________
     QColor Helper::separatorColor( const QPalette& palette ) const
-    { return isDarkTheme( palette ) ? QColor(255, 255, 255, 16) : QColor(0, 0, 0, 16); }
+    { return isDarkTheme( palette ) ? QColor(255, 255, 255, 190) : QColor(0, 0, 0, 190); }
 
     //______________________________________________________________________________
     QPalette Helper::disabledPalette( const QPalette& source, qreal ratio ) const
@@ -1941,5 +2027,11 @@ namespace Ocean
     // bool Helper::isDarkTheme(const QPalette& palette) const
     // { 
     //     return true;
+    // }
+
+    // QColor Helper::focusColor(const QPalette& palette) const 
+    // { 
+    //     Q_UNUSED(palette);
+    //     return baseColor; // 使用全局强调色
     // }
 }
