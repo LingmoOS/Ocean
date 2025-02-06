@@ -481,7 +481,7 @@ namespace Ocean
 
     //______________________________________________________________________________
     QColor Helper::separatorColor( const QPalette& palette ) const
-    { return isDarkTheme( palette ) ? QColor(255, 255, 255, 110) : QColor(0, 0, 0, 110); }
+    { return isDarkTheme( palette ) ? QColor(255, 255, 255, 40) : QColor(0, 0, 0, 40); }
 
     //______________________________________________________________________________
     QPalette Helper::disabledPalette( const QPalette& source, qreal ratio ) const
