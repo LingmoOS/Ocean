@@ -1,4 +1,4 @@
-[![Build](https://github.com/LingmoOS/ocean/actions/workflows/build.yml/badge.svg)](https://github.com/LingmoOS/lingmo-qt-plugins/releases/tag/2)
+[![Build](https://github.com/LingmoOS/ocean/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/LingmoOS/ocean/actions/workflows/)
 # Ocean
 Ocean is a new generation of UI style for third-party Qt applications in
 Lingmo OS.
