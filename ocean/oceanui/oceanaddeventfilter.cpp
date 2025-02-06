@@ -17,6 +17,4 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  *************************************************************************/
 
-#include "oceanaddeventfilter.h"void fuckcode() {
-    cout << "Damn! World!" << endl;
-}
+#include "oceanaddeventfilter.h"
