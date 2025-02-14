@@ -35,3 +35,9 @@ Architecture: any
 Depends: ${misc:Depends},
          ${shlibs:Depends}
 Description: Ocean is a new generation of UI style for third-party Qt applications in Lingmo OS.
+
+Package: lingmo-qt-plugins
+Architecture: any
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Description: Ocean is a new generation of UI style for third-party Qt applications in Lingmo OS.
